@@ -1,0 +1,461 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Forcan Profile</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hind+Siliguri:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one left-aligned column. Small passport photo, then name, About, Profile table, and a row of tappable contact icons. Black ground, one red accent. */
+  :root {
+    --bg: #09090a;
+    --surface: #131315;
+    --fg: #f3f0f0;
+    --muted: #a39b9e;
+    --line: #2b2b2f;
+    --accent: #e5222f;
+    --accent-soft: #ff5a63;
+    --accent-fg: #ffffff;
+    --font-display: "Bricolage Grotesque", "Hind Siliguri", system-ui, sans-serif;
+    --font-body: "Hind Siliguri", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-block: 28px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 3px; border-radius: 6px; }
+
+  .hero { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .photo {
+    width: 84px;
+    aspect-ratio: 3 / 4;
+    object-fit: contain;
+    border-radius: 6px;
+    background: var(--surface);
+    display: block;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.8rem, 12vw, 4.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .bn { font-size: 1.6rem; font-weight: 500; color: var(--accent-soft); margin: 2px 0 0; line-height: 1.3; }
+  .role { margin: 8px 0 0; color: var(--muted); max-width: 46ch; }
+  .handle { font-family: var(--font-mono); font-size: 13px; color: var(--accent-soft); letter-spacing: 0.02em; }
+
+  /* Cartoon greeter: waves and says Salam as the page opens. */
+  .greet { display: flex; align-items: center; gap: 6px; width: 100%; }
+  .toon { width: 132px; flex: none; overflow: visible; animation: rise 0.8s cubic-bezier(.2,.9,.3,1.2) both, bob 3s ease-in-out 0.8s infinite; }
+  @keyframes rise { from { transform: translateY(40px); } to { transform: translateY(0); } }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .wave { transform-origin: 0 0; animation: wave 0.7s ease-in-out infinite alternate; }
+  @keyframes wave { from { transform: rotate(-8deg); } to { transform: rotate(38deg); } }
+  .blink { transform-box: fill-box; transform-origin: center; animation: blink 4s infinite; }
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+  .bubble {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    padding: 12px 16px;
+    min-width: 0;
+    animation: pop 0.6s cubic-bezier(.2,.9,.3,1.3) 0.3s both;
+    transform-origin: left center;
+  }
+  .bubble::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    background: var(--surface);
+    border-left: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
+    transform: translateY(-50%) rotate(45deg);
+  }
+  @keyframes pop { from { transform: scale(0.7); } to { transform: scale(1); } }
+  .salam { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; line-height: 1.25; margin: 0; color: var(--fg); }
+  .salam-en { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .about { margin: 0; max-width: 62ch; }
+  .chips { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 12px;
+  }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  dl { margin: 0; }
+  .row {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 4px 16px;
+    padding: 13px 18px;
+    align-items: center;
+  }
+  .row + .row { border-top: 1px solid var(--line); }
+  dt { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+
+  .socials { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .social {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+  }
+  .icon-link {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--accent-fg);
+    transition: transform 0.15s, background 0.15s;
+  }
+  .icon-link:hover { background: var(--accent-soft); transform: translateY(-2px); }
+  .icon-link svg { width: 26px; height: 26px; }
+  .s-name { font-weight: 600; margin-top: 6px; }
+  .s-detail { font-family: var(--font-mono); font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+  .copy {
+    font: 500 12px var(--font-mono);
+    color: var(--fg);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 3px 10px;
+    cursor: pointer;
+  }
+  .copy:hover { border-color: var(--accent); color: var(--accent-soft); }
+
+  /* 3D photo showcase: photos fly toward the viewer and change automatically. Tap or click to skip ahead. */
+  .g-track { --stage: min(74svh, 580px); --step: 58svh; height: var(--stage); }
+  .g-stage {
+    position: relative;
+    height: var(--stage);
+    cursor: pointer;
+    perspective: 900px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: radial-gradient(ellipse at 50% 40%, #1d1012 0%, var(--bg) 70%);
+  }
+  .g-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(84%, 340px);
+    aspect-ratio: 3 / 4;
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    background: var(--surface);
+    will-change: transform, opacity;
+    transform: translate(-50%, -50%);
+  }
+  .g-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .g-count {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    z-index: 200;
+  }
+  .g-count b { color: var(--accent-soft); font-weight: 500; }
+  .g-hint { position: absolute; right: 14px; bottom: 12px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); z-index: 200; }
+
+  footer { color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+
+  @media (max-width: 520px) {
+    .row { grid-template-columns: 1fr; gap: 2px; }
+    .toon { width: 104px; }
+    .salam { font-size: 1.2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .icon-link { transition: none; }
+    .toon, .wave, .blink, .bubble { animation: none; }
+    .g-track { height: auto; }
+    .g-stage { position: static; height: auto; overflow: visible; perspective: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; padding: 12px; background: var(--surface); }
+    .g-card { position: static; width: 100%; transform: none !important; opacity: 1 !important; filter: none !important; }
+    .g-count, .g-hint { display: none; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="greet">
+      <svg class="toon" viewBox="0 0 200 230" role="img" aria-label="Cartoon of Forcan waving hello">
+        <!-- left arm -->
+        <rect x="34" y="162" width="20" height="62" rx="10" fill="#16161a" transform="rotate(8 44 162)"/>
+        <circle cx="38" cy="226" r="9" fill="#c68a5c"/>
+        <!-- body -->
+        <path d="M34 230 C34 176 66 154 100 154 C134 154 166 176 166 230 Z" fill="#16161a"/>
+        <path d="M86 154 L114 154 L100 190 Z" fill="#f3f0f0"/>
+        <path d="M96 164 L104 164 L108 198 L100 208 L92 198 Z" fill="#e5222f"/>
+        <!-- neck + ears + head -->
+        <rect x="89" y="132" width="22" height="26" rx="6" fill="#b47850"/>
+        <circle cx="59" cy="98" r="8" fill="#c68a5c"/>
+        <circle cx="141" cy="98" r="8" fill="#c68a5c"/>
+        <ellipse cx="100" cy="94" rx="41" ry="46" fill="#d09566"/>
+        <!-- hair -->
+        <path d="M57 94 C50 48 80 32 104 34 C132 34 154 52 144 94 C140 76 132 66 122 62 C112 70 94 68 80 70 C66 74 62 84 57 94 Z" fill="#0c0c0e"/>
+        <path d="M96 36 C92 48 90 58 84 68" stroke="#2b2b30" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- face -->
+        <path d="M70 88 Q82 82 94 87" stroke="#0c0c0e" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M106 87 Q118 82 130 88" stroke="#0c0c0e" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <g class="blink"><ellipse cx="82" cy="99" rx="6" ry="7" fill="#1b0f0a"/><circle cx="84" cy="96.5" r="2" fill="#fff"/></g>
+        <g class="blink"><ellipse cx="118" cy="99" rx="6" ry="7" fill="#1b0f0a"/><circle cx="120" cy="96.5" r="2" fill="#fff"/></g>
+        <path d="M97 106 Q100 112 103 106" stroke="#9a6440" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M84 118 Q100 112 116 118 Q100 121 84 118 Z" fill="#1b1212"/>
+        <path d="M90 126 Q100 135 110 126" stroke="#7a2a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- waving arm -->
+        <g transform="translate(150 172)">
+          <g class="wave">
+            <rect x="-10" y="-52" width="20" height="58" rx="10" fill="#16161a"/>
+            <circle cx="0" cy="-58" r="11" fill="#d09566"/>
+          </g>
+        </g>
+      </svg>
+      <div class="bubble">
+        <p class="salam" lang="bn">আসসালামু আলাইকুম</p>
+        <p class="salam-en">Assalamu Alaikum, welcome to my page.</p>
+      </div>
+    </div>
+    <div>
+      <h1>Forcan</h1>
+      <p class="bn" lang="bn">ফোরকান</p>
+      <p class="role">Student and computer systems analyst at Quantum Qube Tech Ltd.</p>
+      <span class="handle">@forkan_noct</span>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="label">About</h2>
+    <p class="about">I’m Forcan. Ever since I was young, I’ve had a keen interest in computers, the online world, gaming, and anime. Alongside my studies, I work in system analysis at Quantum Qube Tech Limited. I enjoy learning online, working, and exploring new developments in technology. In my free time I play games, watch anime, and work on personal growth. Through consistent learning and practice, I keep improving my skills.</p>
+    <ul class="chips">
+      <li>Computers</li>
+      <li>Gaming</li>
+      <li>Anime</li>
+      <li>Online learning</li>
+      <li>Technology</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="label">Photos</h2>
+    <div class="g-track" id="g-track">
+      <div class="g-stage" id="g-stage">
+        <figure class="g-card"><img src="gal/p0.jpg" alt="Portrait of Forcan in a black suit and tie" loading="eager" style="object-position:center 25%"></figure>
+        <figure class="g-card"><img src="gal/p1.jpg" alt="Forcan standing in a green field, leaning on a log" loading="eager"></figure>
+        <figure class="g-card"><img src="gal/p2.jpg" alt="Forcan in a white polo shirt, selfie" loading="eager"></figure>
+        <figure class="g-card"><img src="gal/p3.jpg" alt="Forcan in a blue striped shirt at the beach" loading="eager" style="object-position:center 30%"></figure>
+        <figure class="g-card"><img src="gal/p4.jpg" alt="Forcan walking on the beach, seen from behind" loading="eager"></figure>
+        <figure class="g-card"><img src="gal/p5.jpg" alt="Forcan in a white polo shirt in front of a tree" loading="eager" style="object-position:center 20%"></figure>
+        <figure class="g-card"><img src="gal/p6.jpg" alt="Black and white photo of Forcan at the beach" loading="eager" style="object-position:center 60%"></figure>
+        <figure class="g-card"><img src="gal/p7.jpg" alt="Forcan in a green patterned t-shirt" loading="eager"></figure>
+        <span class="g-count" id="g-count"><b>1</b> / 8</span>
+        <span class="g-hint">Auto · tap for next</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="label">Profile</h2>
+    <div class="panel">
+      <dl>
+        <div class="row"><dt>Name</dt><dd>Forcan · <span lang="bn">ফোরকান</span></dd></div>
+        <div class="row"><dt>Date of birth</dt><dd>28 August 2007</dd></div>
+        <div class="row"><dt>Age</dt><dd><span id="age">19</span> years</dd></div>
+        <div class="row"><dt>Studying</dt><dd>Student</dd></div>
+        <div class="row"><dt>Work</dt><dd>Computer systems analyst, Quantum Qube Tech Ltd</dd></div>
+        <div class="row"><dt>Address (English)</dt><dd>Village/Road: Khodda Sogona<br>Post office: Chhoto Majhipara 5900<br>Joypurhat Sadar, Joypurhat</dd></div>
+        <div class="row"><dt>ঠিকানা (বাংলা)</dt><dd lang="bn">গ্রাম/রাস্তা: খোদ্দ সগুনা<br>ডাকঘর: ছোট মাঝিপাড়া ৫৯০০<br>জয়পুরহাট সদর, জয়পুরহাট</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="label">Find me</h2>
+    <div class="socials">
+      <div class="social">
+        <a class="icon-link" href="https://wa.me/8801722894758" target="_blank" rel="noopener" aria-label="Open WhatsApp chat with 01722894758">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.2-4.1A8 8 0 1 1 8.2 19z"/><path d="M9 9.2c.3 2.6 2.4 4.9 5.8 5.8l1.2-1.5-2-1-1 .7c-.8-.4-1.5-1.1-1.9-1.9l.7-1-1-2z" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <span class="s-name">WhatsApp</span>
+        <span class="s-detail" id="wa1">01722894758</span>
+        <button class="copy" type="button" data-copy="wa1">Copy number</button>
+      </div>
+      <div class="social">
+        <a class="icon-link" href="https://wa.me/8801329396608" target="_blank" rel="noopener" aria-label="Open WhatsApp chat with 01329396608">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.2-4.1A8 8 0 1 1 8.2 19z"/><path d="M9 9.2c.3 2.6 2.4 4.9 5.8 5.8l1.2-1.5-2-1-1 .7c-.8-.4-1.5-1.1-1.9-1.9l.7-1-1-2z" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <span class="s-name">WhatsApp 2</span>
+        <span class="s-detail" id="wa2">01329396608</span>
+        <button class="copy" type="button" data-copy="wa2">Copy number</button>
+      </div>
+      <div class="social">
+        <a class="icon-link" href="https://www.instagram.com/forkan_noct" target="_blank" rel="noopener" aria-label="Open Instagram profile forkan_noct">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <span class="s-name">Instagram</span>
+        <span class="s-detail">@forkan_noct</span>
+      </div>
+      <div class="social">
+        <a class="icon-link" href="https://www.facebook.com/share/1E5MVGJqmL/" target="_blank" rel="noopener" aria-label="Open Facebook profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.2"/><path d="M3 19c.4-3.3 2.6-5 6-5s5.6 1.7 6 5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M17.5 14.2c2.2.2 3.2 1.6 3.5 4"/></svg>
+        </a>
+        <span class="s-name">Facebook</span>
+        <span class="s-detail">Forcan</span>
+      </div>
+      <div class="social">
+        <a class="icon-link" href="mailto:hackeroctopass@gmail.com" aria-label="Email hackeroctopass@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>
+        </a>
+        <span class="s-name">Email</span>
+        <span class="s-detail" id="em1">hackeroctopass@gmail.com</span>
+        <button class="copy" type="button" data-copy="em1">Copy email</button>
+      </div>
+      <div class="social">
+        <a class="icon-link" href="mailto:whoforkan@gmail.com" aria-label="Email whoforkan@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>
+        </a>
+        <span class="s-name">Email 2</span>
+        <span class="s-detail" id="em2">whoforkan@gmail.com</span>
+        <button class="copy" type="button" data-copy="em2">Copy email</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Developed by Forcan<br>Copyright © 2026</footer>
+</div>
+
+<script>
+  (function () {
+    // Age from date of birth (28 Aug 2007)
+    try {
+      var dob = new Date(2007, 7, 28), now = new Date();
+      var age = now.getFullYear() - dob.getFullYear();
+      var m = now.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+      if (age > 0 && age < 120) document.getElementById("age").textContent = age;
+    } catch (e) {}
+
+    // 3D photo showcase: auto-advancing loop
+    try {
+      var stage = document.getElementById("g-stage");
+      var cards = Array.prototype.slice.call(stage.querySelectorAll(".g-card"));
+      var counter = document.getElementById("g-count");
+      var n = cards.length;
+      var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+      var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      var p = 0, from = 0, to = 0, startT = 0, HOLD = 2600, MOVE = 850, lastDone = 0, moving = false;
+
+      function render() {
+        var W = stage.clientWidth;
+        cards.forEach(function (c, i) {
+          var d = (((i - p) % n) + n) % n;     // 0 = centre, positive = waiting on the right, negative = gone to the left
+          if (d > n - 2) d -= n;
+          var ad = Math.abs(d);
+          var x = d * W * 0.56;
+          var z = -Math.min(ad, 2) * 180;
+          var ry = clamp(-d, -1, 1) * 32;
+          var op = clamp(1.7 - ad * 0.95, 0, 1);
+          var br = 1 - Math.min(ad, 1) * 0.5;
+          c.style.transform = "translate(-50%,-50%) translate3d(" + x.toFixed(1) + "px,0," + z.toFixed(1) + "px) rotateY(" + ry.toFixed(1) + "deg)";
+          c.style.opacity = op.toFixed(3);
+          c.style.filter = br < 1 ? "brightness(" + br.toFixed(2) + ")" : "none";
+          c.style.zIndex = String(100 - Math.round(ad * 10));
+          c.style.visibility = op <= 0 ? "hidden" : "visible";
+        });
+        counter.innerHTML = "<b>" + ((((Math.round(p) % n) + n) % n) + 1) + "</b> / " + n;
+      }
+      function next(now) {
+        if (moving) { from = to; p = to; }   // finish current move, then go again
+        from = p; to = Math.round(p) + 1; startT = now; moving = true;
+      }
+      function frame(now) {
+        if (moving) {
+          var t = clamp((now - startT) / MOVE, 0, 1);
+          p = from + (to - from) * ease(t);
+          if (t >= 1) { moving = false; p = to; lastDone = now; }
+        } else if (now - lastDone > HOLD) {
+          next(now);
+        }
+        render();
+        requestAnimationFrame(frame);
+      }
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        stage.addEventListener("click", function () { next(performance.now()); });
+        render();
+        requestAnimationFrame(function (t) { lastDone = t; frame(t); });
+      }
+    } catch (e) {}
+
+    // Copy buttons with selection fallback
+    document.querySelectorAll("[data-copy]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var el = document.getElementById(btn.getAttribute("data-copy"));
+        var text = el.textContent.trim();
+        function done() {
+          var old = btn.textContent;
+          btn.textContent = "Copied";
+          setTimeout(function () { btn.textContent = old; }, 1400);
+        }
+        function select() {
+          var r = document.createRange();
+          r.selectNodeContents(el);
+          var s = window.getSelection();
+          s.removeAllRanges();
+          s.addRange(r);
+        }
+        try {
+          navigator.clipboard.writeText(text).then(done, select);
+        } catch (e) { select(); }
+      });
+    });
+  })();
+</script>
+
+</body></html>
